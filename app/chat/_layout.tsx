@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import { StreamChat } from "stream-chat";
+import { OverlayProvider, Chat } from 'stream-chat-expo';
 
 const API_KEY = "vjepn8rkwv8t";
 const client = StreamChat.getInstance(API_KEY);
@@ -8,7 +9,7 @@ const client = StreamChat.getInstance(API_KEY);
 export default function ChatLayout() {
     useEffect(() => {
       
-        
+
     //  connset the user
     const connectUser = async () => {
       await client.connectUser(
@@ -24,6 +25,7 @@ export default function ChatLayout() {
       // create a channel
       const channel = client.channel("livestream", "public", {
         name: "Public",
+        // image: "https://i.imgur.com/fR9Jz14.png",
       });
         await channel.create();
     };
@@ -35,8 +37,12 @@ export default function ChatLayout() {
   }, []);
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Messages" }} />
-    </Stack>
+    <OverlayProvider>
+      <Chat client={client}>
+        <Stack>
+          <Stack.Screen name="index" options={{ title: "iMessages" }} />
+        </Stack>
+      </Chat>
+    </OverlayProvider>
   );
 }
